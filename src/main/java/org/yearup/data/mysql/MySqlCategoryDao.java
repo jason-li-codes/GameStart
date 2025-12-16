@@ -25,8 +25,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
                 SELECT
                     *
                 FROM
-                    categories
-                """;
+                    categories;""";
 
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -61,7 +60,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
                 INSERT INTO
                     categories (name, description)
                 VALUES
-                    (?, ?)""";
+                    (?, ?);""";
 
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -95,7 +94,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
                     name = ?,
                     description = ?
                 WHERE
-                    categoryId = ?""";
+                    categoryId = ?;""";
 
         try (Connection connection = getConnection()) {
 
@@ -118,7 +117,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
                 DELETE FROM
                     categories
                 WHERE
-                    categoryId = ?""";
+                    categoryId = ?;""";
 
         try (Connection connection = getConnection()) {
 

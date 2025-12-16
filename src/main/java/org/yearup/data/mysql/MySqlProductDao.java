@@ -31,7 +31,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
                     (category_id = ? OR ? = -1)
                     AND (price >= ? OR ? = -1)
                     AND (price <= ? OR ? = -1)
-                    AND (subcategory = ? OR ? = '')""";
+                    AND (subcategory = ? OR ? = '');""";
 
         categoryId = categoryId == null ? -1 : categoryId;
         minPrice = minPrice == null ? new BigDecimal("-1") : minPrice;
@@ -74,7 +74,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
                     FROM
                         products
                     WHERE
-                        category_id = ?""";
+                        category_id = ?;""";
 
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -100,7 +100,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
                 FROM
                     products
                 WHERE
-                    product_id = ?""";
+                    product_id = ?;""";
 
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -124,7 +124,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
                 INSERT INTO
                     products(name, price, category_id, description, subcategory, image_url, stock, featured)
                 VALUES
-                    (?, ?, ?, ?, ?, ?, ?, ?)""";
+                    (?, ?, ?, ?, ?, ?, ?, ?);""";
 
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -172,7 +172,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
                     stock = ?,
                     featured = ?
                 WHERE
-                    product_id = ?""";
+                    product_id = ?;""";
 
         try (Connection connection = getConnection()) {
 
@@ -201,7 +201,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
                 DELETE FROM
                     products
                 WHERE
-                    product_id = ?""";
+                    product_id = ?;""";
 
         try (Connection connection = getConnection()) {
 
