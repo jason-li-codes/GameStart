@@ -17,14 +17,14 @@ import java.util.List;
 
 @Component
 public class MySqlOrderDao extends MySqlDaoBase implements OrderDao {
-
+    // constructor injects the datasource and passes it to the base DAO
     public MySqlOrderDao(DataSource dataSource) {
         super(dataSource);
     }
 
     @Override
     public Order create(Order order) {
-
+        // parameterized SQL to prevent SQL injection
         String sql = """
                 INSERT INTO
                     orders (user_id, date, address, city, state, zip, shipping_amount)
@@ -34,7 +34,7 @@ public class MySqlOrderDao extends MySqlDaoBase implements OrderDao {
 
         try (Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-
+            // set parameters for the insert statement
             preparedStatement.setInt(1, order.getUserId());
             preparedStatement.setTimestamp(2, java.sql.Timestamp.valueOf(order.getDate()));
             preparedStatement.setString(3, order.getAddress());
@@ -42,26 +42,27 @@ public class MySqlOrderDao extends MySqlDaoBase implements OrderDao {
             preparedStatement.setString(5, order.getState());
             preparedStatement.setString(6, order.getZip());
             preparedStatement.setBigDecimal(7, order.getShippingAmount());
-
+            // execute insert and check if any row was affected
             int affectedRows = preparedStatement.executeUpdate();
             if (affectedRows == 0) throw new SQLException("Creating order failed, no rows affected.");
-
+            // retrieve generated order id
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if (resultSet.next()) {
                     order.setOrderId(resultSet.getInt(1));
                 }
             }
+            // return the order object with generated id
             return order;
-        } catch (Exception e) {
+        } catch (Exception e) { // wrap exception
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<Order> getOrdersByUserId(int userId) {
-
+        // instantiate list to store orders
         List<Order> orders = new ArrayList<>();
-
+        // parameterized SQL to prevent SQL injection
         String sql = """
                 SELECT
                     *
@@ -72,27 +73,31 @@ public class MySqlOrderDao extends MySqlDaoBase implements OrderDao {
 
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-
+            // set userId parameter
             statement.setInt(1, userId);
-
+            // execute query
             ResultSet row = statement.executeQuery();
-
+            // iterate through result set and map to Order objects
             while (row.next()) {
                 Order order = new Order();
                 order.setOrderId(row.getInt(1));
                 order.setUserId(row.getInt(2));
+                // parse datetime string from sql into LocalDateTime
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 order.setDate(LocalDateTime.parse(row.getString(3), formatter));
+
                 order.setAddress(row.getString(4));
                 order.setCity(row.getString(5));
                 order.setState(row.getString(6));
                 order.setZip(row.getString(7));
                 order.setShippingAmount(row.getBigDecimal(8));
+                // add order to list
                 orders.add(order);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e) { // wrap exception
             throw new RuntimeException(e);
         }
+        // return list of orders
         return orders;
     }
 
