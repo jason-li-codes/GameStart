@@ -5,25 +5,48 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.yearup.data.OrderDao;
 import org.yearup.data.UserDao;
 import org.yearup.models.Order;
 import org.yearup.models.User;
 import org.yearup.services.OrderService;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @CrossOrigin
 @RequestMapping("orders")
 public class OrdersController {
 
+    private OrderDao orderDao;
     private OrderService orderService;
     private UserDao userDao;
 
     @Autowired
-    public OrdersController(OrderService orderService, UserDao userDao) {
+    public OrdersController(OrderDao orderDao, OrderService orderService, UserDao userDao) {
+        this.orderDao = orderDao;
         this.orderService = orderService;
         this.userDao = userDao;
+    }
+
+    @GetMapping("view")
+    @PreAuthorize("isAuthenticated()")
+    public List<Order> getOrders(Principal principal) {
+
+        try {
+
+            User user = userDao.getUserByUserName(principal.getName());
+
+            if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+            int userId = user.getId();
+
+            return orderDao.getOrdersByUserId(userId);
+
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 
     @PostMapping

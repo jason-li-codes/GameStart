@@ -63,13 +63,11 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
 
             if (resultSet.next()) {
                 return mapCategoryRow(resultSet);
-            } else {
-                return null;
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
 
     @Override

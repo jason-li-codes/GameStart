@@ -37,13 +37,15 @@ public class OrderService {
         Order order = new Order();
 
         createOrder(userId, order);
-        orderDao.create(order);
 
         ShoppingCart cart = shoppingCartDao.getByUserId(userId);
 
         if (cart == null || cart.getItems().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cart is empty.");
         }
+
+        order.setShippingAmount(cart.getTotal());
+        orderDao.create(order);
 
         Map<Integer, ShoppingCartItem> itemList = cart.getItems();
 

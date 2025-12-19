@@ -41,7 +41,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
 
             ResultSet row = statement.executeQuery();
 
-            if (row.next()) {
+            while (row.next()) {
 
                 int productId = row.getInt("product_id");
                 String name = row.getString("name");
@@ -87,7 +87,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
 
             ResultSet row = statement.executeQuery();
 
-            if (row.next()) {
+            while (row.next()) {
 
                 int productId = row.getInt("product_id");
                 String name = row.getString("name");

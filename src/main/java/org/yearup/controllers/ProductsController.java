@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.yearup.models.Category;
 import org.yearup.models.Product;
 import org.yearup.data.ProductDao;
 
@@ -41,17 +42,17 @@ public class ProductsController {
     @PreAuthorize("permitAll()")
     public Product getById(@PathVariable int id) {
 
+        Product product = null;
+
         try {
-            var product = productDao.getById(id);
-
-            if(product == null)
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-            return product;
+            product = productDao.getById(id);
         }
         catch(Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
+        if (product == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return product;
     }
 
     @PostMapping()
@@ -68,10 +69,11 @@ public class ProductsController {
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void updateProduct(@PathVariable int id, @RequestBody Product product) {
+    public Product updateProduct(@PathVariable int id, @RequestBody Product product) {
 
         try {
             productDao.update(id, product);
+            return productDao.getById(id);
         }
         catch(Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
@@ -79,15 +81,11 @@ public class ProductsController {
     }
 
     @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteProduct(@PathVariable int id) {
 
         try {
-            var product = productDao.getById(id);
-
-            if(product == null)
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
             productDao.delete(id);
         }
         catch(Exception ex) {
