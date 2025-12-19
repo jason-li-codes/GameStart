@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 public interface ShoppingCartDao {
 
-
+    // superclass methods to be overridden in child class
     ShoppingCart getByUserId(int userId);
     ShoppingCart getByOrderId(int orderId);
     ShoppingCart addItem(int userId, ShoppingCartItem item);

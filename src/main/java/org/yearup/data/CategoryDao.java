@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface CategoryDao
 {
+    // superclass methods to be overridden in child class
     List<Category> getAllCategories();
     Category getById(int categoryId);
     Category create(Category category);

@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ProductDao
 {
+    // superclass methods to be overridden in child class
     List<Product> search(Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, String subCategory);
     List<Product> listByCategoryId(int categoryId);
     Product getById(int productId);
