@@ -101,20 +101,9 @@ VALUES  ('user','$2a$10$NkufUPF3V8dEPSZeo1fzHe9ScBu.LOay9S3N32M84yuUM2OJYEJ/.','
 
 /* INSERT Profiles */
 INSERT INTO profiles (user_id, first_name, last_name, phone, email, address, city, state, zip)
-VALUES
-    (1, 'Jason', 'Li', '800-555-1234', 'jason.li@email.com', '789 Oak Avenue', 'New York', 'NY', '10000'),
-    (2, 'Alvin', 'Hive', '800-555-6789', 'alvin.hive@email.com', '234 Pine Street', 'New York', 'NY', '10001'),
-    (3, 'Hassan', 'Bashar', '800-555-2345', 'hassan.bashar@email.com', '567 Maple Lane', 'New York', 'NY', '10002'),
-    (4, 'Harmond', 'Singer', '800-555-5432', 'harmond.singer@email.com', '890 Spruce Road', 'New York', 'NY', '10003'),
-    (5, 'Ashton', 'Mendoza', '800-555-8765', 'ashton.mendoza@email.com', '321 Oak Drive', 'New York', 'NY', '10004'),
-    (6, 'Jazzella', 'Pathogen', '800-555-4321', 'jazzella.pathogen@email.com', '654 Cedar Way', 'New York', 'NY', '10005'),
-    (7, 'Dennis', 'Lan', '800-555-7654', 'dennis.lan@email.com', '987 Birch Avenue', 'New York', 'NY', '10006'),
-    (8, 'Andres', 'Marquez', '800-555-1122', 'andres.marquez@email.com', '345 Willow Drive', 'New York', 'NY', '10007'),
-    (9, 'Lodi', 'Lanes', '800-555-3344', 'lodi.lanes@email.com', '876 Elm Circle', 'New York', 'NY', '10008'),
-    (10, 'Altair', 'Quinoa', '800-555-5566', 'altair.quinoa@email.com', '432 Pine Lane', 'New York', 'NY', '10009'),
-    (11, 'Marcus', 'Casavieja', '800-555-6677', 'marcus.casavieja@email.com', '123 Maple Road', 'New York', 'NY', '10010'),
-    (12, 'Ivan', 'Ivanov', '800-555-7788', 'ivan.ivanov@email.com', '876 Oak Circle', 'New York', 'NY', '10011'),
-    (13, 'Ronald', 'Sonald', '800-555-8899', 'ronald.sonald@email.com', '543 Birch Avenue', 'New York', 'NY', '10012');
+VALUES  (1, 'Joe', 'Joesephus', '800-555-1234', 'joejoesephus@email.com', '789 Oak Avenue', 'Dallas', 'TX', '75051'),
+        (2, 'Adam', 'Admamson', '800-555-1212', 'aaadamson@email.com', '456 Elm Street','Dallas','TX','75052'),
+        (3, 'George', 'Jetson', '800-555-9876', 'george.jetson@email.com', '123 Birch Parkway','Dallas','TX','75051')     ;
 
 /* INSERT Categories */
 INSERT INTO categories (name, description) 
@@ -218,6 +207,12 @@ VALUES  ('Cookware Set', 149.99, 3, 'A comprehensive set of high-quality cookwar
         ('Kitchen Timer', 9.99, 3, 'Keep track of cooking times with this handy and easy-to-use kitchen timer.', 'kitchen-timer.jpg', 100, 0, 'White'),
         ('Mixing Bowls Set', 29.99, 3, 'A set of versatile and durable mixing bowls for all your culinary creations.', 'mixing-bowls.jpg', 30, 1, 'Silver'),
         ('Measuring Cup Set', 14.99, 3, 'Accurately measure ingredients with this set of handy and stackable measuring cups.', 'measuring-cups.jpg', 50, 1, 'Green');
+
+-- sample duplicates from "bug"
+INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory)
+VALUES  ('Laptop', 999.99, 1, 'A high-performance laptop for work and entertainment.', 'laptop.jpg', 30, 0, 'Gray'),
+        ('Laptop', 999.99, 1, 'A high-performance gaming laptop.', 'laptop.jpg', 30, 0, 'Gray'),
+        ('Tea Kettle', 29.99, 3, 'Brew a perfect cup of tea with this classic tea kettle.', 'tea-kettle.jpg', 50, 1, 'White');
 
 -- add shopping cart items
 INSERT INTO shopping_cart (user_id, product_id, quantity)
