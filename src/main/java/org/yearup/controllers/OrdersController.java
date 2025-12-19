@@ -46,7 +46,7 @@ public class OrdersController {
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Server not connected..");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Server not connected.");
         }
     }
 }

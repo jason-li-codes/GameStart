@@ -38,9 +38,9 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
         maxPrice = maxPrice == null ? new BigDecimal("-1") : maxPrice;
         subCategory = subCategory == null ? "" : subCategory;
 
-        try (Connection connection = getConnection())
-        {
-            PreparedStatement statement = connection.prepareStatement(sql);
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setInt(1, categoryId);
             statement.setInt(2, categoryId);
             statement.setBigDecimal(3, minPrice);
@@ -76,8 +76,9 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
                     WHERE
                         category_id = ?;""";
 
-        try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sql);
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setInt(1, categoryId);
 
             ResultSet row = statement.executeQuery();
@@ -103,8 +104,9 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
                 WHERE
                     product_id = ?;""";
 
-        try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sql);
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setInt(1, productId);
 
             ResultSet row = statement.executeQuery();
@@ -127,8 +129,9 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
                 VALUES
                     (?, ?, ?, ?, ?, ?, ?, ?);""";
 
-        try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
             statement.setString(1, product.getName());
             statement.setBigDecimal(2, product.getPrice());
             statement.setInt(3, product.getCategoryId());
@@ -175,9 +178,9 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
                 WHERE
                     product_id = ?;""";
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, product.getName());
             statement.setBigDecimal(2, product.getPrice());
             statement.setInt(3, product.getCategoryId());
@@ -204,9 +207,9 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao {
                 WHERE
                     product_id = ?;""";
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, productId);
 
             statement.executeUpdate();

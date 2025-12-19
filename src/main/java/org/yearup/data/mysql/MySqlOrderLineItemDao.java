@@ -25,9 +25,8 @@ public class MySqlOrderLineItemDao extends MySqlDaoBase implements OrderLineItem
                 VALUES
                     (?, ?, ?, ?, ?)
                 """;
-        try(Connection connection = getConnection()) {
-
-            PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+        try (Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setInt(1, orderLineItem.getOrderId());
             preparedStatement.setInt(2, orderLineItem.getProductId());

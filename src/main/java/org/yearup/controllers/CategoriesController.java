@@ -76,6 +76,7 @@ public class CategoriesController {
     }
 
     @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     // insert the category
     public Category addCategory(@RequestBody Category category) {
@@ -99,7 +100,8 @@ public class CategoriesController {
         }
     }
 
-    @DeleteMapping()
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     // delete the category by id
     public void deleteCategory(@PathVariable int id) {

@@ -85,7 +85,8 @@ public class ShoppingCartController {
             User user = userDao.getUserByUserName(userName);
             if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
             int userId = user.getId();
-            return shoppingCartDao.updateItem(userId, shoppingCartItem);
+            shoppingCartDao.updateItem(userId, shoppingCartItem);
+            return shoppingCartDao.getByUserId(userId);
         }
         catch (ResponseStatusException e) {
             throw e;
@@ -98,7 +99,7 @@ public class ShoppingCartController {
     // https://localhost:8080/cart
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public void deleteCart(Principal principal) {
 
         try {

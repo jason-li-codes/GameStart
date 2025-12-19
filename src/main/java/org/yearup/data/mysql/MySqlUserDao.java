@@ -30,15 +30,27 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao {
 
         String hashedPassword = new BCryptPasswordEncoder().encode(newUser.getPassword());
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, newUser.getUsername());
             ps.setString(2, hashedPassword);
             ps.setString(3, newUser.getRole());
 
             ps.executeUpdate();
 
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Retrieve the generated keys
+                ResultSet generatedKeys = ps.getGeneratedKeys();
+
+                if (generatedKeys.next()) {
+                    // Retrieve the auto-incremented ID
+                    int userId = generatedKeys.getInt(1);
+                    newUser.setId(userId);
+                }
+            }
             User user = getUserByUserName(newUser.getUsername());
             user.setPassword("");
 
@@ -64,9 +76,9 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao {
 
         String updatedHashedPassword = new BCryptPasswordEncoder().encode(updatedUser.getPassword());
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, updatedUser.getUsername());
             ps.setString(2, updatedHashedPassword);
             ps.setString(3, updatedUser.getRole());
@@ -94,9 +106,8 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao {
                 FROM
                     users""";
 
-        try (Connection connection = getConnection()) {
-
-            PreparedStatement statement = connection.prepareStatement(sql);
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
             ResultSet row = statement.executeQuery();
 
@@ -121,9 +132,9 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao {
                 WHERE
                     user_id = ?""";
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
 
             ResultSet row = statement.executeQuery();
@@ -148,9 +159,9 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao {
                 WHERE
                     username = ?""";
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, username);
 
             ResultSet row = statement.executeQuery();
@@ -188,6 +199,8 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao {
         String hashedPassword = row.getString("hashed_password");
         String role = row.getString("role");
 
-        return new User(userId, username, hashedPassword, role);
+        User user = new User(username, hashedPassword, role);
+        user.setId(userId);
+        return user;
     }
 }

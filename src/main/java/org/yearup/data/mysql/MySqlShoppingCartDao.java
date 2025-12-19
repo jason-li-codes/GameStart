@@ -34,8 +34,9 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
                 WHERE
                     user_id = ?""";
 
-        try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sql);
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setInt(1, userId);
 
             ResultSet row = statement.executeQuery();
@@ -79,8 +80,9 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
                 WHERE
                     order_id = ?""";
 
-        try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(sql);
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setInt(1, orderId);
 
             ResultSet row = statement.executeQuery();
@@ -120,9 +122,9 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
                 ON DUPLICATE KEY UPDATE
                     quantity = quantity + 1;""";
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, item.getProduct().getProductId());
 
@@ -134,7 +136,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
     }
 
     @Override
-    public ShoppingCart updateItem(int userId, ShoppingCartItem item) {
+    public void updateItem(int userId, ShoppingCartItem item) {
 
         String sql = """
                 UPDATE
@@ -145,16 +147,16 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
                     user_id = ?
                     AND product_id = ?""";
 
-        try (Connection connection = getConnection()) {
+        try (Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, item.getQuantity());
             preparedStatement.setInt(2, userId);
             preparedStatement.setInt(3,  item.getProduct().getProductId());
 
             int rows = preparedStatement.executeUpdate();
             if (rows == 0) throw new SQLException("Update failed, no rows affected!");
-            return getByUserId(userId);
+
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -169,9 +171,10 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
                     shopping_cart
                 WHERE
                     user_id = ?""";
-        try (Connection connection = getConnection()) {
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setInt(1, userId);
 
             int rows = preparedStatement.executeUpdate();

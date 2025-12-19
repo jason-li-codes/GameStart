@@ -11,7 +11,7 @@ public interface ShoppingCartDao {
     ShoppingCart getByUserId(int userId);
     ShoppingCart getByOrderId(int orderId);
     ShoppingCart addItem(int userId, ShoppingCartItem item);
-    ShoppingCart updateItem(int userId, ShoppingCartItem item);
+    void updateItem(int userId, ShoppingCartItem item);
     void deleteShoppingCart(int userId);
     BigDecimal getShoppingCartTotal(ShoppingCart shoppingCart);
 

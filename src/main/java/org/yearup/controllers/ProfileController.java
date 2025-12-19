@@ -13,8 +13,8 @@ import org.yearup.models.User;
 import java.security.Principal;
 
 @RestController
-@CrossOrigin
 @RequestMapping("profile")
+@CrossOrigin
 public class ProfileController {
 
     private ProfileDao profileDao;
@@ -26,7 +26,7 @@ public class ProfileController {
         this.userDao = userDao;
     }
 
-    @GetMapping("")
+    @GetMapping
     @PreAuthorize("isAuthenticated()")
     public Profile getProfileById(Principal principal) {
 
@@ -45,7 +45,7 @@ public class ProfileController {
         }
     }
 
-    @PutMapping("")
+    @PutMapping
     @PreAuthorize(("isAuthenticated()"))
     public Profile updateProfile(Principal principal, @RequestBody Profile profile) {
 
@@ -56,8 +56,7 @@ public class ProfileController {
             User user = userDao.getUserByUserName(userName);
             int userId = user.getId();
 
-            profileDao.update(userId, profile);
-            return profile;
+            return profileDao.update(userId, profile);
 
         } catch (ResponseStatusException e) {
             throw e;
