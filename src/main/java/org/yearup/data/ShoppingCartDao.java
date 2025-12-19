@@ -5,6 +5,11 @@ import org.yearup.models.ShoppingCartItem;
 
 import java.math.BigDecimal;
 
+/**
+ * Defines the contract for shopping cart operations.
+ * This interface specifies the methods that implementing classes must provide
+ * for creating, updating, and retrieving shopping carts from a data source.
+ */
 public interface ShoppingCartDao {
 
     // superclass methods to be overridden in child class

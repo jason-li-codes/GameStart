@@ -4,6 +4,11 @@ import org.yearup.models.User;
 
 import java.util.List;
 
+/**
+ * Defines the contract for user data access operations.
+ * This interface specifies the methods that implementing classes must provide
+ * for creating, updating, and retrieving user records from a data source.
+ */
 public interface UserDao {
     // superclass methods to be overridden in child class
     List<User> getAll();
